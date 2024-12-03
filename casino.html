@@ -1,0 +1,274 @@
+<html lang="en" class="">
+
+<head>
+
+    <meta charset="UTF-8">
+    <title>Casino</title>
+    <meta name="viewport"
+        content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <meta name="robots" content="noindex">
+
+    <link rel="shortcut icon" type="image/x-icon"
+        href="https://static.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico">
+    <link rel="mask-icon" type=""
+        href="https://static.codepen.io/assets/favicon/logo-pin-8f3771b1072e3c38bd662872f6b673a722f4b3ca2421637d5596661b4e2132cc.svg"
+        color="#111">
+    <link rel="canonical" href="https://codepen.io/sonjaz83/pen/abNgBmB">
+
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/magic/1.1.0/magic.min.css">
+    <script type="text/javascript">
+
+        function drawGames() {
+            var casinoGamesNum = document.getElementById('casinoGamesNum').value;//uzima se iz inputa, koliko korisnik unese, broj igara
+
+            //nacrtaj html elemente
+            for (var i = 1; i <= casinoGamesNum; i++) {
+                // var str = i + ') String of text',
+                //     div = document.createElement('div');
+                var str = '<img src="https://www.betole.com:443/ibet/img/b/icimage_15789.png">' + i + '&nbsp;<button class="scale" id="' + i + 'a" onclick="addClassGame(this.id);">+</button><button class="scale" id="' + i + 'r" onclick="removeClassGame(this.id);">-</button>',
+                    div = document.createElement('div');
+
+                div.className = 'casino-game';
+                div.innerHTML = str;
+
+                // var body = document.getElementsByTagName('body')[0];
+                var body = document.getElementById('casinoGamesWrapper');
+                body.appendChild(div);
+            }
+
+        }
+        function getCasinoparameters() {
+
+            // var casinoWidth = document.getElementById('casinoGameWidth').value; //sirina
+            var casinoGameScale = document.getElementById('casinoGameScale').value; //scale faktor za igru
+            var casinoRowsNum = document.getElementById('casinoRowsNum').value;//uzima se iz inputa, koliko korisnik unese, broj redova
+
+
+            //visina 0.8 npr. od sirine:
+            // var casinoHeight = casinoWidth * 0.8;
+
+            let root = document.documentElement;
+
+            root.addEventListener("mousemove", e => {
+                // root.style.setProperty('--casinoWidth', casinoWidth + "px");
+                root.style.setProperty('--casinoGameScale', casinoGameScale);
+                root.style.setProperty('--casinoRowsNum', casinoRowsNum);
+            });
+            return true;
+
+        }
+        function getCasinoparametersClearAndGo() {
+            //prvo obrisi content na go, da ne bi dodavao nove elemente:
+            document.getElementById("casinoGamesWrapper").innerHTML = "";
+            drawGames();
+            getCasinoparameters();
+
+        }
+        function getCasinoparametersClear() {
+            //Samo clear html-a:
+            document.getElementById("casinoGamesWrapper").innerHTML = "";
+
+        }
+        function addClassGame(clicked_id) {
+            document.getElementById(clicked_id).parentNode.classList.add("col-x2");
+            getCasinoparameters();
+        }
+        function removeClassGame(clicked_id) {
+            document.getElementById(clicked_id).parentNode.classList.remove("col-x2");
+        }
+    </script>
+    <style class="INLINE_PEN_STYLESHEET_ID">
+        :root {
+            --casinoWidth: calc(var(--casinoGameScale) * 257px);
+            --casinoHeight: calc(var(--casinoWidth) * 0.8);
+            --casinoRowsNum: 1;
+            --casinoHeightScale: calc(var(--casinoHeight) * 2);
+            --casinoWidthScale: calc(var(--casinoWidth) * 2);
+        }
+
+        .casino-game {
+            width: var(--casinoWidth) !important;
+            height: var(--casinoHeight) !important;
+        }
+
+        .casino-games--wrapper {
+            grid-template-rows: repeat(var(--casinoRowsNum), minmax(var(--casinoHeight), 1fr)) !important;
+            grid-template-columns: repeat(auto-fill, minmax(var(--casinoWidth), 1fr)) !important;
+        }
+
+        .col-x2 {
+            min-height: var(--casinoHeightScale) !important;
+            height: var(--casinoHeightScale) !important;
+            min-width: var(--casinoWidthScale) !important;
+            width: var(--casinoWidthScale) !important;
+        }
+
+        input,
+        button {
+            min-width: 40px;
+            height: 40px;
+            text-align: center;
+            border-radius: 5px;
+            border: none;
+            margin: 5px;
+        }
+
+        input {
+            width: 70px;
+        }
+
+        button {
+            background: pink;
+        }
+
+        .scale {
+            min-width: 20px;
+            width: 20px;
+            height: 20px;
+            margin-top: 2px;
+        }
+
+        .casino-games--scroller {
+            display: grid;
+        }
+
+        .casino-games--scroller::-webkit-scrollbar-track {
+            border-radius: 4px;
+            background-color: rgba(0, 0, 0, 0.1);
+            height: 6px;
+        }
+
+        .casino-games--scroller::-webkit-scrollbar {
+            border-radius: 4px;
+            background-color: rgba(0, 0, 0, 0.1);
+            height: 6px;
+        }
+
+        .casino-games--scroller::-webkit-scrollbar-thumb {
+            border-radius: 4px;
+            background-color: rgba(0, 0, 0, 0.5);
+            height: 4px;
+        }
+
+        body {
+            font-family: Arial;
+            font-weight: normal;
+            font-size: 15px;
+            background: #333;
+            color: #fff;
+            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+        }
+
+        .row {
+            display: flex;
+            align-items: center;
+        }
+
+        .justify-content-between {
+            justify-content: space-between;
+        }
+
+        .flex-wrap {
+            flex-wrap: wrap;
+        }
+
+        /*test-sonja klasu dodati na casino-game*/
+        img {
+            width: 100%;
+            height: calc(100% - 20px);
+        }
+
+        .casino-games--scroller {
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding-bottom: 40px;
+        }
+
+        .casino-games--wrapper {
+            /* grid-template-columns: repeat(10, 1fr); */
+            /*deset komada jedna frakcija*/
+            grid-template-rows: repeat(2, 1fr);
+            /*grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));*/
+            display: grid;
+            row-gap: 5px;
+            column-gap: 5px;
+            /*da bi se popunjavala praznine:*/
+            grid-auto-flow: dense;
+            /*sa ovim radi grid u dva reda:*/
+            grid-auto-flow: column;
+            width: max-content;
+            /*sa ovim se prosiri na full sirinu*/
+
+        }
+
+        .casino-game {
+            /*ova dva ce budu promenljive*/
+            width: 20vw;
+            height: 16vw;
+        }
+
+        .casino-game.col-x2 {
+            grid-column-end: span 2;
+            grid-row-end: span 2;
+            /* grid-column: 2; /* ovim moze da se pomera pozicija po horizontali
+    grid-row: 1 / span 2; */
+            /* height: 100%; */
+            width: 100%;
+        }
+
+        .casino-game-wraper {
+            height: 100%;
+        }
+
+        .casino-game-image {
+            height: 100% !important;
+        }
+
+        .filter {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 10px;
+        }
+    </style>
+
+
+</head>
+
+<body>
+    <div class="row filter justify-content-between flex-wrap">
+        <div class="row">
+            Br igara:&nbsp;
+            <input type="number" id="casinoGamesNum" class="casinoGamesNum" value="20" />
+            <button id="go" onclick="getCasinoparametersClearAndGo();">prikazi(brise podesavanja)</button>
+            <button id="go" onclick="getCasinoparametersClear();">obrisi sve</button>
+        </div>
+        <div class="row flex-wrap">
+            <!-- &nbsp;Sirina igre u procentima:&nbsp;
+            <input type="number" id="casinoGameWidth" class="casinoGameWidth" value="250" /> -->
+            &nbsp;Scale faktor(defaultna sirina 257px):&nbsp;
+            <input type="number" id="casinoGameScale" class="casinoGameScale" value="1.5" />
+            &nbsp;Br redova:&nbsp;
+            <input type="number" id="casinoRowsNum" class="casinoRowsNum" value="2" />
+
+            <button id="go" onclick="getCasinoparameters();">Go</button>
+
+        </div>
+
+    </div>
+    <br>
+    <div class="casino-games--scroller">
+        <div id="casinoGamesWrapper" class="casino-games--wrapper">
+
+        </div>
+    </div>
+    <br>
+
+</body>
+
+</html>
+<!-- https://www.minimamente.com/project/magic/ -->
+<!-- boingInUp
+slideDownReturn -->
